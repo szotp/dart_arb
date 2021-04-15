@@ -18,7 +18,7 @@ class ArbFileManager {
   }
 
   void _saveArbDocument(
-      String fileName, ArbDocument document, Directory directory) {
+      String? fileName, ArbDocument document, Directory directory) {
     final filePath =
         "${directory.path}/${fileName}_${document.locale}.arb";
 

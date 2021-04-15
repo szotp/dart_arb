@@ -5,20 +5,20 @@ import 'package:arb/dart_arb.dart';
 import 'arb_document.dart';
 
 class ArbProject {
-  final String fileName;
+  final String? fileName;
 
   List<ArbDocument> documents;
-  Map<String, ArbResource> resources;
-  String defaultTemplate = 'en_US';
+  late Map<String, ArbResource> resources;
+  String? defaultTemplate = 'en_US';
 
-  DateTime get lastModified => documents
+  DateTime? get lastModified => documents
       .reduce((doc1, doc2) =>
           doc1.lastModified.isAfter(doc2.lastModified) ? doc1 : doc2)
       .lastModified;
 
-  List<String> get locales => documents.map((doc) => doc.locale).toList();
+  List<String?> get locales => documents.map((doc) => doc.locale).toList();
 
-  Map<String, ArbDocument> get mapDocuments =>
+  Map<String?, ArbDocument> get mapDocuments =>
       documents.asMap().map((_, doc) => MapEntry(doc.locale, doc));
 
   ArbProject(this.fileName, {this.documents = const []}) {
@@ -35,7 +35,7 @@ class ArbProject {
     }
   }
 
-  Map<String, Object> toJson() => {
+  Map<String, Object?> toJson() => {
         'fileName': fileName,
         'documents': documents.map((doc) => doc.toJson()).toList(),
         'defaultTemplate': defaultTemplate,

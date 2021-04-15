@@ -5,10 +5,10 @@ author: 'Jaime <git@jaimeblasco.com>'
 homepage: 'https://github.com/jamesblasco/dart_arb'
 
 environment:
-  sdk: ">=2.4.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  args: ^1.5.2
+  args: ^2.0.0
   path: ^1.6.4
 
 

@@ -39,7 +39,7 @@ Future<void> main(List<String> arguments) async {
   }
 
   final String arbPathString = results['arb-dir'] as String;
-  final String outputFileString = results['output-localization-file'] as String;
+  final String? outputFileString = results['output-localization-file'] as String?;
   ArbFileManager().saveArbProject(
       ArbProject(outputFileString, documents: [
         ArbDocument('en', resources: {

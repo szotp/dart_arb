@@ -3,20 +3,20 @@ import 'dart:convert';
 import 'arb_resource.dart';
 
 class ArbDocument {
-  String locale;
+  late String locale;
 
-  DateTime lastModified;
+  late DateTime lastModified;
 
-  Map<String, ArbResource> resources;
+  late Map<String, ArbResource> resources;
 
   ArbDocument(this.locale,
-      {DateTime lastModified, Map<String, ArbResource> resources})
+      {DateTime? lastModified, Map<String, ArbResource>? resources})
       : this.lastModified = lastModified ?? DateTime.now(),
         this.resources = resources ?? {};
 
-  Map<String, Object> toJson() => {
+  Map<String, Object?> toJson() => {
         '@@locale': locale,
-        '@@last_modified': (lastModified ?? DateTime.now()).toIso8601String(),
+        '@@last_modified': (lastModified).toIso8601String(),
         ...resources.map((id, ArbResource resource) =>
             MapEntry(resource.id, resource.value.text)),
         ...resources.map((id, ArbResource resource) => MapEntry(
@@ -28,14 +28,17 @@ class ArbDocument {
               ])))
       };
 
-  ArbDocument.fromJson(Map<String, dynamic> _json, {String locale}) {
+  ArbDocument.fromJson(Map<String, dynamic> _json, {String? locale}) {
     resources = Map<String, ArbResource>();
+    this.lastModified = DateTime.now();
 
-    this.locale = locale;
+    if (locale != null) {
+      this.locale = locale;
+    }
 
     _json.forEach((key, value) {
       if ("@@locale" == key) {
-        this.locale ??= value;
+        this.locale = value;
       } else if ("@@last_modified" == key) {
         lastModified = DateTime.parse(value);
       } else if (key.startsWith("@")) {
@@ -43,11 +46,11 @@ class ArbDocument {
         Map<String, Object> attributes = value;
         attributes.forEach((key, value) => {
               if (key == 'type')
-                entry.type = value
+                entry!.type = value as String
               else if (key == 'description')
-                entry.description = value
+                entry!.description = value as String
               else
-                entry.attributes[key] = value
+                entry!.attributes[key] = value
             });
       } else {
         var entry = ArbResource(key, value);
@@ -62,7 +65,7 @@ class ArbDocument {
     return arbContent;
   }
 
-  factory ArbDocument.decode(String json, {String locale}) {
+  factory ArbDocument.decode(String json, {String? locale}) {
     var decoder = new JsonDecoder();
     ArbDocument arbContent =
         ArbDocument.fromJson(decoder.convert(json), locale: locale);
